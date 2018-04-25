@@ -18,6 +18,7 @@ import java.net.URL;
 
 public class ViewDevice extends AppCompatActivity {
     String IP = "";
+    int id = 0;
     boolean status1 = false;
     boolean status2 = false;
     Button one;
@@ -28,6 +29,8 @@ public class ViewDevice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_device);
         IP = getIntent().getStringExtra("IP");
+        id = getIntent().getIntExtra("id",0);
+        System.out.println("THE ID IS: " + id);
         ((TextView)findViewById(R.id.text)).setText(getIntent().getStringExtra("name"));
         one = findViewById(R.id.one);
         two = findViewById(R.id.two);
@@ -50,90 +53,33 @@ public class ViewDevice extends AppCompatActivity {
     public void toggleOne(View v) {
         if(!status1) {
             String[] args = {IP, "/1/on", "POST"};
-            status1 = true;
-            one.setBackgroundColor(Color.parseColor("green"));
-            new ToggleInteraction().execute(args);
+            new NetworkInteraction().execute(args);
         }
         else {
             String[] args = {IP, "/1/off", "POST"};
-            status1 = false;
-            one.setBackgroundColor(Color.parseColor("grey"));
-            new ToggleInteraction().execute(args);
+            new NetworkInteraction().execute(args);
         }
     }
 
     public void toggleTwo(View v) {
         if(!status2) {
             String[] args = {IP, "/2/on", "POST"};
-            status2 = true;
-            two.setBackgroundColor(Color.parseColor("green"));
-            new ToggleInteraction().execute(args);
+            new NetworkInteraction().execute(args);
         }
         else {
             String[] args = {IP, "/2/off", "POST"};
-            status2 = false;
-            two.setBackgroundColor(Color.parseColor("grey"));
-            new ToggleInteraction().execute(args);
+            new NetworkInteraction().execute(args);
         }
     }
 
     public void toggle(View v) {
         if(!status1 || !status2) {
             String[] args = {IP, "/on", "POST"};
-            status1 = true;
-            status2 = true;
-            one.setBackgroundColor(Color.parseColor("green"));
-            two.setBackgroundColor(Color.parseColor("green"));
-            new ToggleInteraction().execute(args);
+            new NetworkInteraction().execute(args);
         }
         else {
             String[] args = {IP, "/off", "POST"};
-            status1 = false;
-            status2 = false;
-            one.setBackgroundColor(Color.parseColor("grey"));
-            two.setBackgroundColor(Color.parseColor("grey"));
-            new ToggleInteraction().execute(args);
-        }
-    }
-
-    static class ToggleInteraction extends AsyncTask<String, Void, String> {
-
-        protected void onPreExecute() {
-
-        }
-
-        protected String doInBackground(String... params) {
-            String request = "http://" + params[0] + params[1];
-            String method = params[2];
-            try {
-                URL url = new URL(request);
-                System.out.println(url.toString());
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod(method);
-                urlConnection.connect();
-                try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while((line = br.readLine()) != null)
-                    {
-                        sb.append(line);
-                    }
-                    br.close();
-                    return sb.toString();
-                }
-                finally {
-                    urlConnection.disconnect();
-                }
-            }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-                return null;
-            }
-        }
-
-        protected void onPostExecute(String response) {
-
+            new NetworkInteraction().execute(args);
         }
     }
 

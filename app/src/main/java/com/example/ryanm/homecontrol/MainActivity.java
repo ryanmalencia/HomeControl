@@ -33,10 +33,11 @@ public class MainActivity extends AppCompatActivity {
         new NetworkInteraction().execute(args);
     }
 
-    public void viewDevice(String IP, String name) {
+    public void viewDevice(String IP, String name, int id) {
         Intent intent = new Intent(this, ViewDevice.class);
         intent.putExtra("name", name);
         intent.putExtra("IP", IP);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     temp.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             try {
-                                viewDevice(object.getString("IP"),object.getString("name"));
+                                viewDevice(object.getString("IP"),object.getString("name"),object.getInt("id"));
                             }
                             catch(Exception e) {
                                 System.out.println("Error");
