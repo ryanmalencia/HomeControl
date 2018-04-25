@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -80,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
             if(response == null) {
                 return;
             }
+            ProgressBar status = findViewById(R.id.statusSpinner);
             LinearLayout layout = findViewById(R.id.devices);
+            status.setVisibility(View.GONE);
             try {
                 int i = 0;
                 layout.removeAllViews();
