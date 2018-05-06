@@ -23,13 +23,13 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final String serverUrl = "192.168.1.62:3000";
+    static final String serverUrl = "10.0.0.136:3000";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String[] args = {serverUrl,"/devices", "GET"};
+        String[] args = {serverUrl,"/api/plug/get/all", "GET"};
         new NetworkInteraction().execute(args);
     }
 
@@ -82,14 +82,15 @@ public class MainActivity extends AppCompatActivity {
             if(response == null) {
                 return;
             }
+            System.out.println("Response: " + response);
             ProgressBar status = findViewById(R.id.statusSpinner);
             LinearLayout layout = findViewById(R.id.devices);
             status.setVisibility(View.GONE);
             try {
                 int i = 0;
                 layout.removeAllViews();
-                JSONTokener token = new JSONTokener(response);
-                JSONArray array = (JSONArray) token.nextValue();
+                JSONObject temp_object = (JSONObject) new JSONTokener(response).nextValue();
+                JSONArray array = temp_object.getJSONArray("Plugs");
                 while(i < array.length()) {
                     final JSONObject object = array.getJSONObject(i);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -102,11 +103,11 @@ public class MainActivity extends AppCompatActivity {
                     temp.setGravity(Gravity.CENTER);
                     temp.setPadding(0,25,0,25);
                     temp.setBackgroundColor(Color.GRAY);
-                    temp.setText(object.getString("name"));
+                    temp.setText(object.getString("Name"));
                     temp.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             try {
-                                viewDevice(object.getString("IP"),object.getString("name"),object.getInt("id"));
+                                viewDevice(object.getString("IP"),object.getString("Name"),object.getInt("PlugID"));
                             }
                             catch(Exception e) {
                                 System.out.println("Error");

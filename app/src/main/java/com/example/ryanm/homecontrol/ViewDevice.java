@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ViewDevice extends AppCompatActivity {
+    private static final String server = "10.0.0.136:3000";
     String IP = "";
     int id = 0;
     boolean status1 = false;
@@ -36,7 +37,7 @@ public class ViewDevice extends AppCompatActivity {
         two = findViewById(R.id.two);
         all = findViewById(R.id.all);
         System.out.println("IP: " + IP);
-        String[] args = {IP, "/status", "GET"};
+        String[] args = {server, "/api/plug/get/status/" + id, "GET"};
         new NetworkInteraction().execute(args);
     }
 
@@ -50,35 +51,45 @@ public class ViewDevice extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    public static String cleanJson(String json) {
+        json = json.substring(1,json.length()-1);
+        json = json.replace("\\", "");
+        return json;
+    }
+
     public void toggleOne(View v) {
+        one.setEnabled(false);
         if(!status1) {
-            String[] args = {IP, "/1/on", "POST"};
+            String[] args = {server, "/api/plug/turnoneon/" + id, "POST"};
             new NetworkInteraction().execute(args);
         }
         else {
-            String[] args = {IP, "/1/off", "POST"};
+            String[] args = {server, "/api/plug/turnoneoff/" + id, "POST"};
             new NetworkInteraction().execute(args);
         }
     }
 
     public void toggleTwo(View v) {
+        two.setEnabled(false);
         if(!status2) {
-            String[] args = {IP, "/2/on", "POST"};
+            String[] args = {server, "/api/plug/turntwoon/" + id, "POST"};
             new NetworkInteraction().execute(args);
         }
         else {
-            String[] args = {IP, "/2/off", "POST"};
+            String[] args = {server, "/api/plug/turntwooff/" + id, "POST"};
             new NetworkInteraction().execute(args);
         }
     }
 
     public void toggle(View v) {
+        one.setEnabled(false);
+        two.setEnabled(false);
         if(!status1 || !status2) {
-            String[] args = {IP, "/on", "POST"};
+            String[] args = {server, "/api/plug/turnallon/" + id, "POST"};
             new NetworkInteraction().execute(args);
         }
         else {
-            String[] args = {IP, "/off", "POST"};
+            String[] args = {server, "/api/plug/turnalloff/" + id, "POST"};
             new NetworkInteraction().execute(args);
         }
     }
@@ -124,6 +135,7 @@ public class ViewDevice extends AppCompatActivity {
             if(response == null) {
                 return;
             }
+            response = cleanJson(response);
             try {
                 JSONTokener token = new JSONTokener(response);
                 JSONObject object = (JSONObject) token.nextValue();
