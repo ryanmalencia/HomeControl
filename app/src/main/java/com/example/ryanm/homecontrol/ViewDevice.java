@@ -8,17 +8,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import microsoft.aspnet.signalr.client.Credentials;
-import microsoft.aspnet.signalr.client.Platform;
-import microsoft.aspnet.signalr.client.SignalRFuture;
-import microsoft.aspnet.signalr.client.http.Request;
-import microsoft.aspnet.signalr.client.hubs.HubConnection;
-import microsoft.aspnet.signalr.client.hubs.HubProxy;
-import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler1;
-import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler2;
-import microsoft.aspnet.signalr.client.transport.ClientTransport;
-import microsoft.aspnet.signalr.client.transport.ServerSentEventsTransport;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import java.io.BufferedReader;
@@ -27,7 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ViewDevice extends AppCompatActivity {
-    private static final String server = "10.0.0.136:3000";
+    private String server = "10.0.0.136:3000";
     String IP = "";
     int id = 0;
     boolean status1 = false;
@@ -39,6 +28,8 @@ public class ViewDevice extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_device);
+        SettingsHelper helper = new SettingsHelper(getApplicationContext());
+        server = helper.getIP();
         IP = getIntent().getStringExtra("IP");
         id = getIntent().getIntExtra("id",0);
         System.out.println("THE ID IS: " + id);

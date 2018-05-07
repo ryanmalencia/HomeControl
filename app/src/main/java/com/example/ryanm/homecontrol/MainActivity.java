@@ -6,11 +6,12 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -20,14 +21,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-
-    static final String serverUrl = "10.0.0.136:3000";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String[] args = {serverUrl,"/api/plug/get/all", "GET"};
+        SettingsHelper helper = new SettingsHelper(getApplicationContext());
+        String[] args = {helper.getIP(),"/api/plug/get/all", "GET"};
         new NetworkInteraction().execute(args);
     }
 
@@ -36,6 +35,18 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("name", name);
         intent.putExtra("IP", IP);
         intent.putExtra("id", id);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    public void openSettings(MenuItem item) {
+        Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
     }
 

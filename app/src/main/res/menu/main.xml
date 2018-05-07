@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_settings"
+        android:title="@string/settings"
+        android:onClick="openSettings"/>
+    <!--<item
+        android:id="@+id/item_about"
+        android:title="@string/about"
+        android:onClick="openAbout"/>-->
+</menu>
