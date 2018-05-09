@@ -4,10 +4,12 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import java.io.BufferedReader;
@@ -28,16 +30,20 @@ public class ViewDevice extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_device);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         SettingsHelper helper = new SettingsHelper(getApplicationContext());
         server = helper.getIP();
         IP = getIntent().getStringExtra("IP");
         id = getIntent().getIntExtra("id",0);
-        System.out.println("THE ID IS: " + id);
         ((TextView)findViewById(R.id.text)).setText(getIntent().getStringExtra("name"));
         one = findViewById(R.id.one);
         two = findViewById(R.id.two);
         all = findViewById(R.id.all);
-        System.out.println("IP: " + IP);
         String[] args = {server, "/api/plug/get/status/" + id, "GET"};
         new NetworkInteraction().execute(args);
     }
@@ -45,11 +51,16 @@ public class ViewDevice extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            System.out.println("Finishing...");
             finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public static String cleanJson(String json) {

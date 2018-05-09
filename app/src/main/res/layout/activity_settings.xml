@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".Settings">
 
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        tools:context=".ViewDevice"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:id="@+id/textView"
@@ -14,7 +25,7 @@
         android:text="@string/server"
         android:padding="10dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <EditText
         android:id="@+id/serverip"
@@ -24,7 +35,7 @@
         android:inputType="textPersonName"
         android:text="@string/IP"
         app:layout_constraintLeft_toRightOf="@id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
         android:id="@+id/error"

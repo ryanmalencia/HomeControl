@@ -27,13 +27,11 @@ public class SettingsHelper {
             }
             catch(Exception e)
             {
-                System.out.println("Error: File not found");
                 settings = new SettingFile();
                 saveSettings();
             }
         }
         else{
-            System.out.println("File not found");
             settings = new SettingFile();
             saveSettings();
         }
@@ -48,15 +46,11 @@ public class SettingsHelper {
     }
 
     public boolean saveSettings() {
-        System.out.println("saving:" + settings.serverIP);
         int count = settings.serverIP.split(Pattern.quote(".")).length;
-        System.out.println("count: " + count);
         if(count < 4) {
-            System.out.println("invalid entry");
             return false;
         }
         try {
-            System.out.println("saving...");
             FileOutputStream fos = context.openFileOutput("settings.bin", MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(settings);
