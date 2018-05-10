@@ -5,4 +5,6 @@
     <string name="IP">IP</string>
     <string name="save">Save</string>
     <string name="invalidip">Input is not a valid IP format</string>
+    <string name="add_new">Add New Device</string>
+    <string name="name">Name</string>
 </resources>

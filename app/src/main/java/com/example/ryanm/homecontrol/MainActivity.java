@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
     public void openSettings(MenuItem item) {
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
+    }
+
+    public void addNew(View view) {
+        Intent intent = new Intent(this.getApplicationContext(), AddNewDevice.class);
+        this.startActivity(intent);
     }
 
     class NetworkInteraction extends AsyncTask<String, Void, String> {
