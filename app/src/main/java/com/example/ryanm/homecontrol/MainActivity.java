@@ -19,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -101,12 +103,15 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout layout = findViewById(R.id.devices);
             status.setVisibility(View.GONE);
             try {
-                int i = 0;
                 layout.removeAllViews();
-                JSONObject temp_object = (JSONObject) new JSONTokener(response).nextValue();
-                JSONArray array = temp_object.getJSONArray("Plugs");
-                while(i < array.length()) {
-                    final JSONObject object = array.getJSONObject(i);
+                Gson gson = new GsonBuilder().create();
+                PlugCollection plugs;
+                plugs = gson.fromJson(response, PlugCollection.class);
+
+                for(Plug plug : plugs.Plugs) {
+                    final String IP = plug.getIP();
+                    final String Name = plug.getName();
+                    final int id = plug.getID();
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -117,11 +122,11 @@ public class MainActivity extends AppCompatActivity {
                     temp.setGravity(Gravity.CENTER);
                     temp.setPadding(0,25,0,25);
                     temp.setBackgroundColor(Color.GRAY);
-                    temp.setText(object.getString("Name"));
+                    temp.setText(Name);
                     temp.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             try {
-                                viewDevice(object.getString("IP"),object.getString("Name"),object.getInt("PlugID"));
+                                viewDevice(IP, Name, id);
                             }
                             catch(Exception e) {
                                 System.out.println("Error");
@@ -129,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     layout.addView(temp);
-                    i++;
                 }
             }
             catch (Exception e) {
